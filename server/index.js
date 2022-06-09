@@ -9,11 +9,11 @@
  
  const app=express();
  
- app.use('/posts',postRoutes);
-
  app.use(bodyParse.json({limit:"30 mb",extended:true}));
  app.use(bodyParse.urlencoded({limit:"30 mb",extended:true}));
  app.use(cors());
+
+ app.use('/posts',postRoutes);
 
  const connection_URL = "mongodb+srv://userName:7891216649a@cluster0.jlin0.mongodb.net/?retryWrites=true&w=majority"
 const PORT =process.env.PORT || 5000; 
