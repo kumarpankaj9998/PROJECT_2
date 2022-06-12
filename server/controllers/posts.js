@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import Post from '../../client/src/components/Posts/Post/Post.js';
 import PostMessage from "../models/postMessage.js";
 
 export  const getPosts = async (req, res)=>{
@@ -12,7 +11,7 @@ export  const getPosts = async (req, res)=>{
         res.status(404).json({message: error.message});
     }
 }
-
+// wait call kar raha chochu ho tum...okay
 export const createPost = async (req, res) =>{
     const post= req.body;
     
@@ -53,7 +52,7 @@ export const deletePost = async (req,res)=>{
 
 }
 
-export default likePost =async (req, res) =>{
+export const likePost = async (req, res) =>{
 const {id} =req.params;
 if(!mongoose.Types.ObjectId.isValid(id))return res.status(404).send("no post with the given id");
 const post = await PostMessage.findbyID(id);
