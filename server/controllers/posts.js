@@ -11,20 +11,19 @@ export  const getPosts = async (req, res)=>{
         res.status(404).json({message: error.message});
     }
 }
-// wait call kar raha chochu ho tum...okay
+
 export const createPost = async (req, res) =>{
-    const post= req.body;
-    
-    const newPost= new PostMessage(post);
+    const post = req.body;
 
-
+    const newPostMessage =new PostMessage({...post,creator:req.userId,createdAt:new Date().toISOString()});
+     
 try {
-    await newPost.save();
+    await newPostMessage.save();
     
-    res.status(201).jso (newPost);
+    res.status(201).jso (newPostMessage);
 
 } catch (error) {
-    res.status(409).json({message: error});
+    res.status(409).json({message: error.message});
 }
 
 }
@@ -53,10 +52,28 @@ export const deletePost = async (req,res)=>{
 }
 
 export const likePost = async (req, res) =>{
+ 
 const {id} =req.params;
+
+if(!req.userId) return res.json({message:'Unauthenticated'});//that user is eithe authicated or not
+
 if(!mongoose.Types.ObjectId.isValid(id))return res.status(404).send("no post with the given id");
+
+const index=await post.likes.findIndex((id) =>id===String(req.userId));//we are searching in the array of id's who have liked a specific post if the Id is in the array already,that means he already had liked the post so he will not be allowed to do that again
+
+
+if(index===-1){
+    post.likes.push(req.userId);
+
+}else
+{
+    post.likes= post.likes.filter((id)=>id===String(req.userId));
+}
+
+
 const post = await PostMessage.findbyID(id);
-const update = await PostMessage.findbyIdAndUpdate(id,{likeCount:post.likeCount+1},{new:true});
+
+const update = await PostMessage.findbyIdAndUpdate(id,post,{new:true});
 
 res.json(update);
 }

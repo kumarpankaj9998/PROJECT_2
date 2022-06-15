@@ -6,7 +6,9 @@
 
 
  import postRoutes from './routes/post.js';
- //code dikhao
+ import userRoutes from './routes/user.js';
+
+ 
  
  const app=express();
  dotenv.config();
@@ -15,8 +17,8 @@
  app.use(cors());
 
  app.use('/posts',postRoutes);
+ app.use('/user',userRoutes);
 
 const PORT =process.env.PORT || 5000; 
 mongoose.connect(process.env.connection_URL,{useNewUrlParser:true,useUnifiedTopology:true}).then(()=>app.listen(PORT,()=>console.log(`Server running on port:${PORT}`))).catch((error)=>console.log(error));
-// mongoose.set('useFindAndModify',true);
-//test and module
+//mongoose.set('useFindAndModify',true);
