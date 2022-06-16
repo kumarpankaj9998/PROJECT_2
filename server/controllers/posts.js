@@ -77,3 +77,22 @@ const update = await PostMessage.findbyIdAndUpdate(id,post,{new:true});
 
 res.json(update);
 }
+
+//Queary-> /posts?page=1 ->page=1
+//Params->/posts/:id, that means if i write /posts/123 : then id=123
+export const getPostsBySearch = async (req, res) =>{
+    const {searchQuery,tags} = req.query;
+
+
+    try {
+        const title = new RegExp(searchQuery,'i');
+
+        const posts= await PostMessage.find({$or:[{title},{tags:{$in:tags.split(',')}}]});//find me the post with either Title or tags which is passed from front end
+
+        res.json({data:posts});
+    } catch (error) {
+        res.status(404).json({message:error.message});
+
+    }
+
+}
