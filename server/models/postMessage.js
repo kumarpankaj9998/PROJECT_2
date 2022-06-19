@@ -9,12 +9,13 @@
     selectedFile: String,
     likes:{
         type: [String],
-        default: []
+        default: [],
     },
     createdAt: {
         type: Date,
-        default: new Date()
+        default: new Date(),
     },
+    comment: {type: [String], default:[]},
  });
 
  const PostMessage = mongoose.model('Postmessage',postSchema);

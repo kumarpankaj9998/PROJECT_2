@@ -106,3 +106,29 @@ export const getPostsBySearch = async (req, res) =>{
     }
 
 }
+
+export const getPost = async(req, res)=>
+{
+    const {id} =req.params;
+
+    try {
+        const post= await PostMessage.findbyId(id);
+
+        res.status(200).json(post);
+
+    } catch (error) {
+        res.status(404).json({message: error.message});
+    }
+}
+
+export const commentPost = async(req, res)=>{
+
+    const {id} =req.params;
+    const {value} =req.body;
+
+    const post= await PostMessage.findById(id);
+
+    const updatePost= await PostMessage.findByIdAndUpdate(id,post,{new:true});
+
+    res.json(updatePost);
+}
